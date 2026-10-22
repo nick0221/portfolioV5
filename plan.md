@@ -243,11 +243,16 @@ only the interactive leaves (`DraftingField`, `Reveal`, `Counter`, modal, copy b
 - [ ] Print output inspected as PDF
 
 ### Phase 5 — Quality gates
-- [ ] `tsc --noEmit`, `eslint`, `next build` all clean
-- [ ] Lighthouse: performance ≥ 90 desktop, ≥ 80 mobile; accessibility ≥ 95; SEO = 100
-- [ ] Keyboard-only pass: skip link → nav → work rows → modal → contact
-- [ ] Contrast check on every text/background pair (AA)
-- [ ] `prefers-reduced-motion` pass: no motion, all content visible
+- [x] `tsc --noEmit`, `eslint`, `next build` all clean (flat ESLint config added — Next 16
+      removed `next lint`)
+- [x] Contrast audit: all text pairs computed in code; `--muted` was 4.21:1 and failed AA, darkened
+      to `#646a5d` (4.82:1)
+- [x] `prefers-reduced-motion` paths implemented in every primitive and in the canvas
+- [x] Structural a11y audit: 1×h1, 6×h2, ordered h3/h4, 0 images without alt, landmarks
+      (header/main/nav/footer/aside), skip link, focus-visible, 44px targets
+- [ ] Keyboard-only walkthrough with a browser (modal trap verified by code, not by hand)
+- [ ] Lighthouse — **not run**: no browser in this environment. Budgets below are measured
+      from the build, not from Lighthouse.
 
 ### Phase 6 — Ship
 - [ ] README with screenshots, stack, local setup
@@ -258,14 +263,21 @@ only the interactive leaves (`DraftingField`, `Reveal`, `Counter`, modal, copy b
 
 ## 7. Budgets
 
-| Metric | Target |
-|---|---|
-| LCP (mobile, 4G) | < 2.5s |
-| CLS | < 0.05 |
-| First-load JS | < 180 KB gzip |
-| Canvas frame time | < 8ms on desktop, < 12ms mobile |
-| Hero image | ≤ 120 KB (WebP, sized) |
-| Gallery images | lazy, explicit width/height, no CLS |
+| Metric | Target | Measured |
+|---|---|---|
+| First-load JS | < 180 KB gzip | **247 KB gzip — target missed** |
+| First-load CSS | < 20 KB gzip | 7.5 KB ✅ |
+| CLS | < 0.05 | Structurally 0: every image sits in a fixed aspect box |
+| Canvas frame time | < 8ms desktop, < 12ms mobile | 3 path draws/frame, tiered stroke budget |
+| Hero image | ≤ 120 KB | 7.7 KB (400×400 WebP, preloaded) |
+| Gallery images | lazy + sized | lazy, in aspect boxes, served through `next/image` |
+
+**On the JS number:** the framework floor is ~185 KB gzip (React 19 + Next 16 App Router),
+and Framer Motion is ~55 KB of the remaining 62 KB. The original 180 KB budget was set before
+that baseline was measured and was not achievable with this stack. Honest options, in order of
+risk: replace Framer with ~40 lines of IntersectionObserver + CSS transitions (biggest win,
+touches nine files), or adopt `LazyMotion`/`domAnimation` (~15–25 KB win, mechanical rename).
+Both are deliberately deferred rather than rushed without a browser to verify against.
 
 ---
 
@@ -293,6 +305,8 @@ only the interactive leaves (`DraftingField`, `Reveal`, `Counter`, modal, copy b
 | 2026-10-22 | 2 | `DraftingField` scroll-reactive canvas; `Reveal` / `MaskLine` / `DrawRule` / `Counter` primitives | (same commit) |
 | 2026-10-22 | 3 | All seven sections built; work archive + gallery modal; SSR content audit passed | `feat: build all content sections` |
 | 2026-10-22 | 4 | 404 / error / loading surfaces, print stylesheet, responsive corrections, README | `feat: add route surfaces, print styles and craft pass` |
+| 2026-10-22 | 5 | ESLint flat config; 3 real lint errors fixed (const, setState-in-effect, anchor→Link); `next/image` for every raster; contrast token fixed to AA | `chore: quality gates — lint, images, contrast` |
+| 2026-10-22 | 6 | Deployed to Vercel, protection off, `NEXT_PUBLIC_SITE_URL` set, GitHub auto-deploy verified against commit SHA | `docs: record deployment` |
 
 ### Implementation notes
 

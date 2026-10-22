@@ -22,15 +22,10 @@ export function Counter({ to, duration = 1100, pad = 0, className }: CounterProp
   const [value, setValue] = useState(to);
 
   useEffect(() => {
-    if (!inView || reduced) {
-      setValue(to);
-      return;
-    }
+    if (!inView || reduced) return;
 
     let frame = 0;
     const start = performance.now();
-
-    setValue(0);
 
     const tick = (now: number) => {
       const progress = Math.min((now - start) / duration, 1);

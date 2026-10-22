@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion, useMotionValue, useSpring } from "framer-motion";
+import Image from "next/image";
 import { useMemo, useRef, useState } from "react";
 
 import { projects } from "@/lib/content/projects";
@@ -108,14 +109,13 @@ export function WorkArchive() {
               </span>
 
               {project.imageUrl ? (
-                <span className="col-start-2 mt-1 block overflow-hidden border border-rule bg-paper-deep md:hidden">
-                  {/* eslint-disable-next-line @next/next/no-img-element -- static local asset */}
-                  <img
+                <span className="relative col-start-2 mt-1 block aspect-[16/9] overflow-hidden border border-rule bg-paper-deep md:hidden">
+                  <Image
                     src={project.imageUrl}
                     alt=""
-                    loading="lazy"
-                    decoding="async"
-                    className="aspect-[16/9] w-full object-cover"
+                    fill
+                    sizes="100vw"
+                    className="object-cover"
                   />
                 </span>
               ) : null}
@@ -147,12 +147,15 @@ export function WorkArchive() {
             className="pointer-events-none fixed left-0 top-0 z-30 hidden w-[300px] md:block"
           >
             <div className="border border-ink/15 bg-paper p-1.5 shadow-[0_18px_40px_-24px_rgba(18,21,15,0.55)]">
-              {/* eslint-disable-next-line @next/next/no-img-element -- static local asset */}
-              <img
-                src={activeProject.imageUrl}
-                alt=""
-                className="aspect-[16/9] w-full object-cover"
-              />
+              <div className="relative aspect-[16/9] w-full">
+                <Image
+                  src={activeProject.imageUrl}
+                  alt=""
+                  fill
+                  sizes="300px"
+                  className="object-cover"
+                />
+              </div>
               <p className="mono-meta mt-1.5 px-1 pb-0.5">
                 {activeProject.technologies?.[0] ?? "Case study"}
               </p>

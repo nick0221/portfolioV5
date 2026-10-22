@@ -1,10 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { useCallback, useEffect, useRef } from "react";
 
 import type { Project } from "@/types/content";
-import { cn } from "@/lib/utils";
 
 interface ProjectModalProps {
   project: Project;
@@ -181,13 +181,12 @@ export function ProjectModal({ project, index, onClose }: ProjectModalProps) {
                 ? gallery.map((image, i) => (
                     <figure key={`${image.urlImage}-${i}`} className="group">
                       <div className="relative aspect-[2/1] overflow-hidden border border-rule bg-paper-deep">
-                        {/* eslint-disable-next-line @next/next/no-img-element -- static local asset */}
-                        <img
+                        <Image
                           src={image.urlImage}
                           alt={`${project.title} — ${image.label}`}
-                          loading="lazy"
-                          decoding="async"
-                          className="h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.02]"
+                          fill
+                          sizes="(max-width: 640px) 100vw, 45vw"
+                          className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.02]"
                         />
                       </div>
                       <figcaption className="mono-meta mt-2">
@@ -202,13 +201,12 @@ export function ProjectModal({ project, index, onClose }: ProjectModalProps) {
                   ? (
                       <figure className="sm:col-span-2">
                         <div className="relative aspect-[2/1] overflow-hidden border border-rule bg-paper-deep">
-                          {/* eslint-disable-next-line @next/next/no-img-element -- static local asset */}
-                          <img
+                          <Image
                             src={cover}
                             alt={project.title}
-                            loading="lazy"
-                            decoding="async"
-                            className="h-full w-full object-cover"
+                            fill
+                            sizes="(max-width: 640px) 100vw, 80vw"
+                            className="object-cover"
                           />
                         </div>
                         <figcaption className="mono-meta mt-2">

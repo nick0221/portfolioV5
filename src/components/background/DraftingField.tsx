@@ -73,7 +73,7 @@ export default function DraftingField() {
     let height = 0;
     let dpr = 1;
     let grid: HTMLCanvasElement | null = null;
-    let strokes: Stroke[] = [];
+    const strokes: Stroke[] = [];
     let frameId = 0;
     let running = false;
     let time = 0;

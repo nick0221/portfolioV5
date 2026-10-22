@@ -39,7 +39,7 @@ export function ScrollRail() {
                 <span
                   className={cn(
                     "mono-label tabular transition-colors duration-300",
-                    isActive ? "text-accent" : "text-muted/70 group-hover:text-ink",
+                    isActive ? "text-accent" : "text-muted group-hover:text-ink",
                   )}
                 >
                   {section.index}

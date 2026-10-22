@@ -4,7 +4,7 @@ Portfolio of **Romnick S. Sevilla** — full-stack web developer and DevOps
 enthusiast. Built as a *drafting table*: warm paper, ink, hairlines and
 numbered sheets, with a canvas flow field that reacts to the reader's scroll.
 
-**Live:** _set after deploy_
+**Live:** https://portfolio-v5-two-alpha.vercel.app
 **Predecessor:** [portfolio-v4.1](https://github.com/nick0221/portfolio-v4.1) · https://nickdevs.vercel.app
 
 ## Stack

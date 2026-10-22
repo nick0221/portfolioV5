@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect } from "react";
 
 /**
@@ -46,12 +47,12 @@ export default function Error({
             >
               Try again <span aria-hidden="true">↻</span>
             </button>
-            <a
+            <Link
               href="/"
               className="mono-label inline-flex min-h-11 items-center gap-3 border border-ink/25 px-5 py-3 text-ink transition-colors hover:border-ink"
             >
               Back to the portfolio
-            </a>
+            </Link>
           </div>
 
           {error.digest ? (
