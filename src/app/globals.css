@@ -261,6 +261,20 @@
       transform: translateY(300%);
     }
   }
+
+  /* Indeterminate progress bar for the route-level loading state. */
+  .cue-line-bar {
+    animation: cue-bar 1.7s var(--ease-draft) infinite;
+  }
+
+  @keyframes cue-bar {
+    0% {
+      transform: translateX(-110%);
+    }
+    100% {
+      transform: translateX(320%);
+    }
+  }
 }
 
 @utility no-scrollbar {
@@ -283,5 +297,35 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Print — the portfolio as a document, not a screen
+   ───────────────────────────────────────────────────────────── */
+@media print {
+  body {
+    background: #ffffff;
+    color: #000000;
+  }
+
+  .shell-line {
+    border-inline: 0;
+  }
+
+  section {
+    break-inside: avoid;
+  }
+
+  h1,
+  h2,
+  h3 {
+    break-after: avoid;
+  }
+
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.72em;
+    color: #444444;
   }
 }

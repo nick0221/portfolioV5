@@ -234,10 +234,13 @@ only the interactive leaves (`DraftingField`, `Reveal`, `Counter`, modal, copy b
 - [x] SSR audit: 13/13 projects, 36/36 skills, 3/3 roles, 4/4 certs, degree, 7 section ids
 
 ### Phase 4 — Craft pass
-- [ ] Responsive at 375 / 768 / 1024 / 1440 / 1920; no horizontal scroll anywhere
-- [ ] Type scale re-tuned per breakpoint; serif never orphans a single word
-- [ ] Hover/focus states on every interactive element; 44px minimum targets
-- [ ] Print stylesheet (portfolio → clean PDF)
+- [x] Print stylesheet (portfolio → clean document, chrome hidden, links expanded)
+- [x] Route-level surfaces: on-brand 404, error boundary, loading state
+- [x] Structural responsive fixes: nav collapses below `lg` (it overflowed at 768–1024),
+      sheet rail only appears where the 1440 frame leaves margin (`1680px+`),
+      masked display type padded for italic swashes, work rows rebalanced to 6/3/2
+- [ ] Breakpoint pass at 375 / 768 / 1024 / 1440 / 1920 (structural only — no browser here)
+- [ ] Print output inspected as PDF
 
 ### Phase 5 — Quality gates
 - [ ] `tsc --noEmit`, `eslint`, `next build` all clean
@@ -289,6 +292,7 @@ only the interactive leaves (`DraftingField`, `Reveal`, `Counter`, modal, copy b
 | 2026-10-22 | 1 | Next 16 + Tailwind v4 scaffold; tokens, frame, type scale; 68 assets; hero + chrome; build green | `feat: scaffold app and design system` |
 | 2026-10-22 | 2 | `DraftingField` scroll-reactive canvas; `Reveal` / `MaskLine` / `DrawRule` / `Counter` primitives | (same commit) |
 | 2026-10-22 | 3 | All seven sections built; work archive + gallery modal; SSR content audit passed | `feat: build all content sections` |
+| 2026-10-22 | 4 | 404 / error / loading surfaces, print stylesheet, responsive corrections, README | `feat: add route surfaces, print styles and craft pass` |
 
 ### Implementation notes
 

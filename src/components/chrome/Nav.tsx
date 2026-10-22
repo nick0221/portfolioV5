@@ -39,7 +39,7 @@ export function Nav() {
 
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-50 border-b border-rule bg-paper/92">
+      <header className="fixed inset-x-0 top-0 z-50 border-b border-rule bg-paper/92 print:hidden">
         <div className="shell-line">
           <div className="shell flex h-14 items-center justify-between md:h-16">
             <a
@@ -49,7 +49,7 @@ export function Nav() {
               NICKDEVS<span className="text-accent">.</span>
             </a>
 
-            <nav aria-label="Sections" className="hidden items-center gap-8 md:flex">
+            <nav aria-label="Sections" className="hidden items-center gap-7 lg:flex">
               {sections.map((section) => (
                 <a
                   key={section.id}
@@ -78,7 +78,7 @@ export function Nav() {
               onClick={() => setOpen((value) => !value)}
               aria-expanded={open}
               aria-controls="mobile-index"
-              className="mono-label text-ink md:hidden"
+              className="mono-label text-ink lg:hidden"
             >
               {open ? "CLOSE" : "INDEX"}
             </button>
@@ -98,7 +98,7 @@ export function Nav() {
           role="dialog"
           aria-modal="true"
           aria-label="Section index"
-          className="fixed inset-0 z-40 flex flex-col bg-paper md:hidden"
+          className="fixed inset-0 z-40 flex flex-col bg-paper lg:hidden"
         >
           <div className="shell flex flex-1 flex-col justify-center pt-16">
             <ul>

@@ -27,7 +27,7 @@ export function Contact() {
                 <span className="italic text-accent">holds up</span>.
               </>
             }
-            lede="Available for freelance work — business systems, web applications, or a site that has to look as good as it performs. Email is the fastest way to reach me."
+            lede="For freelance work, collaboration, or a question about any sheet on this page — email is the fastest way to reach me."
           />
 
           <div className="grid gap-12 md:grid-cols-12 md:gap-10">

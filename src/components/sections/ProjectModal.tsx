@@ -77,7 +77,7 @@ export function ProjectModal({ project, index, onClose }: ProjectModalProps) {
 
   return (
     <motion.div
-      className="fixed inset-0 z-[70] flex items-start justify-center overflow-y-auto bg-ink/60 p-0 backdrop-blur-[1px] sm:p-6"
+      className="fixed inset-0 z-[70] flex items-start justify-center overflow-y-auto bg-ink/65 p-0 sm:p-6"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}

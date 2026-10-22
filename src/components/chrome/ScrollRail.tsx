@@ -14,7 +14,7 @@ export function ScrollRail() {
   return (
     <aside
       aria-label="Sheet index"
-      className="pointer-events-none fixed left-0 top-1/2 z-40 hidden -translate-y-1/2 2xl:block"
+      className="pointer-events-none fixed left-0 top-1/2 z-40 hidden -translate-y-1/2 min-[1680px]:block print:hidden"
     >
       <ul className="pointer-events-auto flex flex-col gap-4 pl-5">
         {sections.map((section) => {

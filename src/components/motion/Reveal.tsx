@@ -66,7 +66,7 @@ export function MaskLine({ children, delay = 0, className, pad = true }: MaskLin
     <span
       className={cn(
         "block overflow-hidden",
-        pad && "pb-[0.12em] -mb-[0.12em]",
+        pad && "pb-[0.18em] -mb-[0.18em]",
         className,
       )}
     >

@@ -323,7 +323,7 @@ export default function DraftingField() {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
+      className="pointer-events-none fixed inset-0 -z-10 overflow-hidden print:hidden"
     >
       <div className="paper-grid absolute inset-0 opacity-80" />
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />

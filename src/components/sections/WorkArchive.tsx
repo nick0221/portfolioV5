@@ -77,7 +77,7 @@ export function WorkArchive() {
                 {String(index + 1).padStart(2, "0")}
               </span>
 
-              <span className="md:col-span-5">
+              <span className="md:col-span-6">
                 <span className="block font-display text-[1.6rem] leading-[1.08] transition-colors duration-300 group-hover:text-accent md:text-[2rem]">
                   {lead}
                 </span>
@@ -86,7 +86,7 @@ export function WorkArchive() {
                 ) : null}
               </span>
 
-              <span className="col-start-2 flex flex-wrap gap-x-2 gap-y-1 md:col-span-4 md:col-start-auto">
+              <span className="col-start-2 flex flex-wrap gap-x-2 gap-y-1 md:col-span-3 md:col-start-auto">
                 {project.technologies?.map((tech, techIndex) => (
                   <span key={tech} className="mono-meta">
                     {tech}
