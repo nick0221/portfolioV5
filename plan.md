@@ -270,19 +270,18 @@ only the interactive leaves (`DraftingField`, `Reveal`, `Counter`, modal, copy b
 
 | Metric | Target | Measured |
 |---|---|---|
-| First-load JS | < 180 KB gzip | **247 KB gzip — target missed** |
-| First-load CSS | < 20 KB gzip | 7.5 KB ✅ |
+| First-load JS | < 180 KB gzip | **204 KB gzip** — 43 KB lighter than the first build, still above the target |
+| First-load CSS | < 20 KB gzip | 7.9 KB ✅ |
 | CLS | < 0.05 | Structurally 0: every image sits in a fixed aspect box |
 | Canvas frame time | < 8ms desktop, < 12ms mobile | 3 path draws/frame, tiered stroke budget |
 | Hero image | ≤ 120 KB | 7.7 KB (400×400 WebP, preloaded) |
 | Gallery images | lazy + sized | lazy, in aspect boxes, served through `next/image` |
 
-**On the JS number:** the framework floor is ~185 KB gzip (React 19 + Next 16 App Router),
-and Framer Motion is ~55 KB of the remaining 62 KB. The original 180 KB budget was set before
-that baseline was measured and was not achievable with this stack. Honest options, in order of
-risk: replace Framer with ~40 lines of IntersectionObserver + CSS transitions (biggest win,
-touches nine files), or adopt `LazyMotion`/`domAnimation` (~15–25 KB win, mechanical rename).
-Both are deliberately deferred rather than rushed without a browser to verify against.
+**On the JS number:** the framework floor is ~185 KB gzip (React 19 + Next 16 App Router). The
+first build spent another ~55 KB on Framer Motion; that dependency has since been removed for a
+CSS/IntersectionObserver layer, taking the page to 204 KB — of which our own application code is
+now ~17 KB. The remaining gap to 180 KB is the framework itself, plus `next/image`. Reaching it
+would mean dropping App Router features or image optimisation, which is a worse trade.
 
 ---
 
@@ -311,6 +310,7 @@ Both are deliberately deferred rather than rushed without a browser to verify ag
 | 2026-10-22 | 3 | All seven sections built; work archive + gallery modal; SSR content audit passed | `feat: build all content sections` |
 | 2026-10-22 | 4 | 404 / error / loading surfaces, print stylesheet, responsive corrections, README | `feat: add route surfaces, print styles and craft pass` |
 | 2026-10-22 | 5 | ESLint flat config; 3 real lint errors fixed (const, setState-in-effect, anchor→Link); `next/image` for every raster; contrast token fixed to AA | `chore: quality gates — lint, images, contrast` |
+| 2026-10-22 | 7 | Framer Motion removed (-43 KB gzip); archive filter; sheet prev/next; robots/sitemap/manifest | `perf: drop framer-motion …` + `feat: seo routes` |
 | 2026-10-22 | 6 | Deployed to Vercel, protection off, `NEXT_PUBLIC_SITE_URL` set, GitHub auto-deploy verified against commit SHA | `docs: record deployment` |
 
 ### Implementation notes
@@ -325,11 +325,20 @@ Both are deliberately deferred rather than rushed without a browser to verify ag
 - **Copy:** hero lede is rewritten from v4.1's boilerplate into a factual line (decade of business
   systems, Laravel + Next.js). No claim added that the source data does not support.
 
+### Phase 7 — Enhancement pass ✅
+- [x] Framer Motion removed: motion is IntersectionObserver + CSS transitions, scroll position is
+      a single custom property written by an rAF-throttled passive listener
+- [x] Hidden states scoped under `.js`; with JavaScript off every element renders in place
+- [x] Work archive filterable by stack (derived, with counts, `aria-pressed`, empty state)
+- [x] Project sheets navigate: footer prev/next, ArrowLeft/ArrowRight, position counter, scroll reset
+- [x] `robots.txt`, `sitemap.xml`, web manifest (all `force-static` for export builds)
+- [x] First-load JS 247 KB → 204 KB gzip
+
 ### Known follow-ups (deliberate, not forgotten)
 
-1. **Trim first-load JS** — 247 KB gzip vs the 180 KB target. Either replace Framer Motion with
-   IntersectionObserver + CSS transitions (~9 files, biggest win) or adopt `LazyMotion` with
-   `domAnimation` (~15–25 KB, mechanical). Needs a browser to verify, which this environment lacks.
+1. **First-load JS** — 204 KB gzip. Framework floor is ~185 KB; the rest is `next/image` and our
+   ~17 KB of app code. A future option is splitting the gallery data and loading it only when a
+   sheet opens.
 2. **Visual QA** — the layout was verified structurally (SSR content, compiled CSS, contrast maths,
    breakpoint reasoning), not visually. Run it at 375 / 768 / 1024 / 1440 / 1920 and check the
    work-archive hover preview and the gallery modal by hand.

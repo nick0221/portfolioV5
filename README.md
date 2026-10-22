@@ -14,7 +14,7 @@ numbered sheets, with a canvas flow field that reacts to the reader's scroll.
 | Framework | Next.js 16 (App Router, Turbopack) |
 | UI | React 19, TypeScript strict |
 | Styling | Tailwind CSS v4 (`@theme` tokens, no UI kit) |
-| Motion | Framer Motion 12 for orchestration; canvas + counters hand-written |
+| Motion | None — IntersectionObserver + CSS transitions, one `--progress` variable for scroll |
 | Type | Instrument Serif (self-hosted), Geist Sans, Geist Mono |
 | Hosting | Vercel |
 
@@ -27,11 +27,16 @@ numbered sheets, with a canvas flow field that reacts to the reader's scroll.
   when the tab is hidden, and `prefers-reduced-motion` renders a single static
   frame.
 - **Motion primitives** (`src/components/motion/`) — `Reveal`, `MaskLine`,
-  `DrawRule`, `Counter`. Every one short-circuits to the final state under
-  reduced motion, and the page is fully readable with JS disabled.
+  `DrawRule`, `Counter`. There is no animation library: the browser animates a
+  CSS transition toggled by one data attribute, and scroll progress is a single
+  custom property written by an rAF-throttled passive listener. Hidden states
+  are scoped under a `.js` class, so the page is fully readable with JS
+  disabled, and every primitive restores its final state under reduced motion.
 - **Work archive** (`src/components/sections/WorkArchive.tsx`) — thirteen
   projects as typographic rows with a cursor-follow preview, rather than a
-  card grid. Each row opens a sheet with the real screenshot gallery.
+  card grid. Stack filters are derived from the data (no hand-maintained
+  taxonomy), and each sheet opens with the real screenshot gallery, arrow-key
+  navigation and a position counter.
 - **Calibration meters** (`SkillMeter.tsx`) — dotted levels that light in
   sequence, in place of percentage bars that imply precision nobody has.
 
