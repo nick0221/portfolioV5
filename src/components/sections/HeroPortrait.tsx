@@ -1,33 +1,24 @@
 "use client";
 
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
-import { useRef } from "react";
 
 import { profile } from "@/lib/content/profile";
+import { useScrollProgressVar } from "@/lib/hooks/useScrollProgress";
 
 /**
  * The portrait plate. Only the image moves on scroll, and only slightly —
- * text parallax is a motion-sickness tax with no informational payoff.
+ * text parallax is a motion-sickness tax with no informational payoff. The
+ * movement is a CSS transform driven by a single custom property, so React
+ * never re-renders while the page scrolls.
  */
 export function HeroPortrait() {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const reduced = useReducedMotion();
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
-
-  const y = useTransform(scrollYProgress, [0, 1], [0, 56]);
+  const ref = useScrollProgressVar<HTMLDivElement>("--progress", 1, 0.35);
 
   return (
     <div ref={ref} className="relative">
       <div className="ticks relative overflow-hidden bg-paper-deep">
         <div className="relative aspect-[4/5] w-full">
-          <motion.div
-            style={reduced ? undefined : { y }}
-            className="absolute inset-0 scale-[1.04]"
-          >
+          <div className="parallax-plate absolute inset-0">
             <Image
               src={profile.imageUrl ?? "/profile-pic.webp"}
               alt={`Portrait of ${profile.name}`}
@@ -36,7 +27,7 @@ export function HeroPortrait() {
               sizes="(max-width: 768px) 100vw, 38vw"
               className="object-cover object-top grayscale-[18%] contrast-[1.02]"
             />
-          </motion.div>
+          </div>
         </div>
 
         <div

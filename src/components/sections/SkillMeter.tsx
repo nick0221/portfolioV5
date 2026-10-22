@@ -1,8 +1,6 @@
 "use client";
 
-import { useInView } from "framer-motion";
-import { useRef } from "react";
-
+import { useInViewOnce } from "@/lib/hooks/useInViewOnce";
 import { cn } from "@/lib/utils";
 
 const DOTS = 20;
@@ -17,8 +15,7 @@ interface SkillMeterProps {
  * sequence — a bar chart would imply precision this scale does not have.
  */
 export function SkillMeter({ name, level }: SkillMeterProps) {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const inView = useInView(ref, { once: true, margin: "-8% 0px" });
+  const { ref, inView } = useInViewOnce<HTMLDivElement>("-8% 0px");
   const filled = Math.round((level / 100) * DOTS);
 
   return (

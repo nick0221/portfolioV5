@@ -1,22 +1,17 @@
 "use client";
 
-import { motion, useScroll, useSpring } from "framer-motion";
 import { useCallback, useEffect, useState } from "react";
 
 import { links } from "@/lib/content/links";
 import { SECTION_IDS, sections } from "@/lib/content/sections";
 import { useActiveSection } from "@/lib/hooks/useActiveSection";
+import { useDocumentProgressVar } from "@/lib/hooks/useScrollProgress";
 import { cn } from "@/lib/utils";
 
 export function Nav() {
   const [open, setOpen] = useState(false);
   const active = useActiveSection(SECTION_IDS);
-  const { scrollYProgress } = useScroll();
-  const progress = useSpring(scrollYProgress, {
-    stiffness: 120,
-    damping: 28,
-    restDelta: 0.001,
-  });
+  const progressRef = useDocumentProgressVar<HTMLDivElement>();
 
   const close = useCallback(() => setOpen(false), []);
 
@@ -85,10 +80,10 @@ export function Nav() {
           </div>
         </div>
 
-        <motion.div
+        <div
+          ref={progressRef}
           aria-hidden="true"
-          style={{ scaleX: progress }}
-          className="absolute inset-x-0 bottom-0 h-px origin-left bg-accent"
+          className="nav-progress absolute inset-x-0 bottom-0 h-px origin-left bg-accent"
         />
       </header>
 
@@ -103,16 +98,10 @@ export function Nav() {
           <div className="shell flex flex-1 flex-col justify-center pt-16">
             <ul>
               {sections.map((section, index) => (
-                <motion.li
+                <li
                   key={section.id}
-                  initial={{ opacity: 0, y: 14 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{
-                    delay: 0.04 * index,
-                    duration: 0.5,
-                    ease: [0.16, 1, 0.3, 1],
-                  }}
-                  className="border-b border-rule"
+                  className="overlay-item border-b border-rule"
+                  style={{ animationDelay: `${index * 45}ms` }}
                 >
                   <a
                     href={`#${section.id}`}
@@ -124,19 +113,28 @@ export function Nav() {
                       {section.label}
                     </span>
                   </a>
-                </motion.li>
+                </li>
               ))}
             </ul>
 
-            <a
-              href={links.cv}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={close}
-              className="mono-label mt-10 inline-flex items-center gap-2 text-ink"
-            >
-              Download CV <span aria-hidden="true">↓</span>
-            </a>
+            <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3">
+              <a
+                href={links.cv}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={close}
+                className="mono-label inline-flex items-center gap-2 text-ink"
+              >
+                Download CV <span aria-hidden="true">↓</span>
+              </a>
+              <a
+                href={links.email}
+                onClick={close}
+                className="mono-label inline-flex items-center gap-2 text-muted"
+              >
+                Email <span aria-hidden="true">↗</span>
+              </a>
+            </div>
           </div>
         </div>
       ) : null}

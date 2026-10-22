@@ -1,14 +1,18 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Image from "next/image";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import type { Project } from "@/types/content";
+import { cn } from "@/lib/utils";
 
 interface ProjectModalProps {
   project: Project;
   index: number;
+  position: number;
+  total: number;
+  onPrev: () => void;
+  onNext: () => void;
   onClose: () => void;
 }
 
@@ -20,16 +24,45 @@ const FOCUSABLE =
  * lightbox — a gallery inside a modal inside a page is three scroll contexts
  * fighting each other.
  */
-export function ProjectModal({ project, index, onClose }: ProjectModalProps) {
+export function ProjectModal({
+  project,
+  index,
+  position,
+  total,
+  onPrev,
+  onNext,
+  onClose,
+}: ProjectModalProps) {
+  const scrollerRef = useRef<HTMLDivElement | null>(null);
   const panelRef = useRef<HTMLDivElement | null>(null);
   const closeRef = useRef<HTMLButtonElement | null>(null);
   const restoreRef = useRef<HTMLElement | null>(null);
+  const closeTimer = useRef<number | undefined>(undefined);
+  const [closing, setClosing] = useState(false);
+
+  /** Play the exit transition, then hand control back to the parent. */
+  const requestClose = useCallback(() => {
+    setClosing(true);
+    closeTimer.current = window.setTimeout(onClose, 170);
+  }, [onClose]);
 
   const handleKey = useCallback(
     (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         event.preventDefault();
-        onClose();
+        requestClose();
+        return;
+      }
+
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        onPrev();
+        return;
+      }
+
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+        onNext();
         return;
       }
 
@@ -53,7 +86,7 @@ export function ProjectModal({ project, index, onClose }: ProjectModalProps) {
         first.focus();
       }
     },
-    [onClose],
+    [requestClose, onPrev, onNext],
   );
 
   useEffect(() => {
@@ -68,33 +101,33 @@ export function ProjectModal({ project, index, onClose }: ProjectModalProps) {
     return () => {
       document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", handleKey);
+      if (closeTimer.current) window.clearTimeout(closeTimer.current);
       restoreRef.current?.focus();
     };
   }, [handleKey]);
+
+  // A new sheet always opens at its top.
+  useEffect(() => {
+    scrollerRef.current?.scrollTo({ top: 0 });
+  }, [index]);
 
   const gallery = project.projectGallery ?? [];
   const cover = project.imageUrl;
 
   return (
-    <motion.div
-      className="fixed inset-0 z-[70] flex items-start justify-center overflow-y-auto bg-ink/65 p-0 sm:p-6"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.25 }}
-      onClick={onClose}
+    <div
+      ref={scrollerRef}
+      className="modal-scrim fixed inset-0 z-[70] flex items-start justify-center overflow-y-auto bg-ink/65 p-0 sm:p-6"
+      data-closing={closing ? "" : undefined}
+      onClick={requestClose}
     >
-      <motion.div
+      <div
         ref={panelRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby="project-modal-title"
-        initial={{ opacity: 0, y: 24 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 16 }}
-        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
         onClick={(event) => event.stopPropagation()}
-        className="relative my-0 w-full max-w-5xl border border-rule bg-paper sm:my-6"
+        className="modal-panel relative my-0 w-full max-w-5xl border border-rule bg-paper sm:my-6"
       >
         <div className="sticky top-0 z-10 border-b border-rule bg-paper/95">
           <div className="flex items-start justify-between gap-6 px-5 py-4 sm:px-8">
@@ -116,7 +149,7 @@ export function ProjectModal({ project, index, onClose }: ProjectModalProps) {
             <button
               ref={closeRef}
               type="button"
-              onClick={onClose}
+              onClick={requestClose}
               aria-label="Close project sheet"
               className="mono-label mt-1 shrink-0 border border-ink/20 px-3 py-2 text-ink transition-colors hover:border-ink hover:bg-ink hover:text-paper"
             >
@@ -220,7 +253,31 @@ export function ProjectModal({ project, index, onClose }: ProjectModalProps) {
             </div>
           </div>
         </div>
-      </motion.div>
-    </motion.div>
+
+        <div className="flex items-center justify-between gap-4 border-t border-rule px-5 py-4 sm:px-8">
+          <button
+            type="button"
+            onClick={onPrev}
+            className={cn(
+              "mono-label inline-flex min-h-11 items-center gap-2 text-ink transition-colors hover:text-accent",
+            )}
+          >
+            <span aria-hidden="true">←</span> Previous sheet
+          </button>
+
+          <p className="mono-meta tabular" aria-live="polite">
+            {String(position).padStart(2, "0")} / {String(total).padStart(2, "0")}
+          </p>
+
+          <button
+            type="button"
+            onClick={onNext}
+            className="mono-label inline-flex min-h-11 items-center gap-2 text-ink transition-colors hover:text-accent"
+          >
+            Next sheet <span aria-hidden="true">→</span>
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }

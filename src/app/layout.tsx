@@ -115,6 +115,10 @@ export default function RootLayout({
       className={`${display.variable} ${GeistSans.variable} ${GeistMono.variable}`}
     >
       <body>
+        <script
+          // Runs before the body paints so reveal states never flash.
+          dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js');" }}
+        />
         <a href="#main" className="skip-link">
           Skip to content
         </a>

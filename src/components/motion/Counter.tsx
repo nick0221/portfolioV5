@@ -1,7 +1,9 @@
 "use client";
 
-import { useInView, useReducedMotion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+
+import { useInViewOnce } from "@/lib/hooks/useInViewOnce";
+import { useReducedMotion } from "@/lib/hooks/useMediaQuery";
 
 interface CounterProps {
   to: number;
@@ -16,8 +18,7 @@ interface CounterProps {
  * final value (no CLS from a 0 → 92 swap after hydration).
  */
 export function Counter({ to, duration = 1100, pad = 0, className }: CounterProps) {
-  const ref = useRef<HTMLSpanElement | null>(null);
-  const inView = useInView(ref, { once: true, margin: "-8% 0px" });
+  const { ref, inView } = useInViewOnce<HTMLSpanElement>("-8% 0px");
   const reduced = useReducedMotion();
   const [value, setValue] = useState(to);
 

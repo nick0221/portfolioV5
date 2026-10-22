@@ -1,23 +1,11 @@
 "use client";
 
-import { motion, useReducedMotion, useScroll, useSpring } from "framer-motion";
-import { useRef } from "react";
-
 import { experience } from "@/lib/content/experience";
+import { useScrollProgressVar } from "@/lib/hooks/useScrollProgress";
 
 /** A line that follows the roles into view, exactly as far as you have read. */
 export function ExperienceTimeline() {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const reduced = useReducedMotion();
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start 72%", "end 65%"],
-  });
-  const progress = useSpring(scrollYProgress, {
-    stiffness: 90,
-    damping: 26,
-    restDelta: 0.001,
-  });
+  const ref = useScrollProgressVar<HTMLDivElement>("--progress", 0.72, 0.65);
 
   return (
     <div ref={ref} className="relative pl-7 md:pl-0">
@@ -25,10 +13,9 @@ export function ExperienceTimeline() {
         aria-hidden="true"
         className="absolute bottom-0 left-0 top-0 w-px bg-rule md:left-[10.5rem]"
       />
-      <motion.div
+      <div
         aria-hidden="true"
-        style={reduced ? { scaleY: 1 } : { scaleY: progress }}
-        className="absolute bottom-0 left-0 top-0 w-px origin-top bg-accent md:left-[10.5rem]"
+        className="timeline-progress absolute bottom-0 left-0 top-0 w-px origin-top bg-accent md:left-[10.5rem]"
       />
 
       {experience.map((role) => (
