@@ -4,7 +4,8 @@
 **Subject:** Romnick "Nick" S. Sevilla — Full Stack Web Developer & DevOps Enthusiast
 **Repo:** https://github.com/nick0221/portfolioV5 (branch `main`)
 **Content source of truth:** `nick0221/portfolio-v4.1` (live at https://nickdevs.vercel.app)
-**Status:** Phase 1 — Scaffold & Design System
+**Status:** Built and live — Phases 0–5 complete, Phase 6 shipped
+**Live:** https://portfolio-v5-two-alpha.vercel.app
 **Last updated:** 2026-10-22
 
 ---
@@ -254,10 +255,14 @@ only the interactive leaves (`DraftingField`, `Reveal`, `Counter`, modal, copy b
 - [ ] Lighthouse — **not run**: no browser in this environment. Budgets below are measured
       from the build, not from Lighthouse.
 
-### Phase 6 — Ship
-- [ ] README with screenshots, stack, local setup
-- [ ] Deploy to Vercel, verify the live URL renders the built commit
-- [ ] Update repo description/homepage, link back from profile
+### Phase 6 — Ship ✅
+- [x] README: stack, what is custom, structure, local + static verification
+- [x] Deployed to Vercel; `meta.githubCommitSha` matches `git rev-parse HEAD`, `source: git`
+- [x] Deployment Protection disabled (public), `NEXT_PUBLIC_SITE_URL` set, redeployed
+- [x] Repo description, homepage and topics set
+- [ ] Screenshots in the README — **deferred**: no browser to capture them
+- [ ] Point `nickdevs.vercel.app` at v5 / update profile README — **left to the owner**,
+      v4.1 stays live as the rollback
 
 ---
 
@@ -319,3 +324,16 @@ Both are deliberately deferred rather than rushed without a browser to verify ag
   SSR/CSS inspection. Vercel uses the normal build.
 - **Copy:** hero lede is rewritten from v4.1's boilerplate into a factual line (decade of business
   systems, Laravel + Next.js). No claim added that the source data does not support.
+
+### Known follow-ups (deliberate, not forgotten)
+
+1. **Trim first-load JS** — 247 KB gzip vs the 180 KB target. Either replace Framer Motion with
+   IntersectionObserver + CSS transitions (~9 files, biggest win) or adopt `LazyMotion` with
+   `domAnimation` (~15–25 KB, mechanical). Needs a browser to verify, which this environment lacks.
+2. **Visual QA** — the layout was verified structurally (SSR content, compiled CSS, contrast maths,
+   breakpoint reasoning), not visually. Run it at 375 / 768 / 1024 / 1440 / 1920 and check the
+   work-archive hover preview and the gallery modal by hand.
+3. **Lighthouse** — never run. Expect LCP to be image-bound on mobile; the portrait is 7.7 KB and
+   preloaded, gallery plates are lazy.
+4. **Domain** — the site lives on its deployment URL. Cutting `nickdevs.vercel.app` over to v5 is a
+   one-click change once the visual pass is signed off.
