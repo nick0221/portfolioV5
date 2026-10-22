@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+
+import DraftingField from "@/components/background/DraftingField";
 import { useEffect } from "react";
 
 /**
@@ -20,7 +22,9 @@ export default function Error({
   }, [error]);
 
   return (
-    <main id="main" className="relative flex min-h-[100svh] flex-col">
+    <>
+      <DraftingField />
+      <main id="main" className="relative flex min-h-[100svh] flex-col">
       <div className="shell-line flex flex-1">
         <div className="shell flex flex-1 flex-col justify-center py-24">
           <p className="mono-label flex items-center gap-3">
@@ -60,6 +64,7 @@ export default function Error({
           ) : null}
         </div>
       </div>
-    </main>
+      </main>
+    </>
   );
 }

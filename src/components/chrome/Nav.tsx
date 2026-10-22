@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 export function Nav() {
   const [open, setOpen] = useState(false);
   const active = useActiveSection(SECTION_IDS);
+  const activeSheet = sections.find((section) => section.id === active);
   const progressRef = useDocumentProgressVar<HTMLDivElement>();
 
   const close = useCallback(() => setOpen(false), []);
@@ -58,6 +59,13 @@ export function Nav() {
                   {section.label}
                 </a>
               ))}
+              <span
+                aria-hidden="true"
+                className="mono-label tabular text-muted"
+                title="Current sheet"
+              >
+                {activeSheet?.index ?? "01"} / {String(sections.length + 1).padStart(2, "0")}
+              </span>
               <a
                 href={links.cv}
                 target="_blank"
