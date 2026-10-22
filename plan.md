@@ -34,7 +34,7 @@ Two rules that govern every decision below:
 | `experience.ts` | 3 roles (Freelance 2023–, Yamaha 2016–2023, ICLICK 2014–2016) | `lib/content/experience.ts` |
 | `education.ts` | B.S. Information Technology, CPSU 2010–2014 | `lib/content/education.ts` |
 | `certification.ts` | 4 certs (Google IT Support, Google Prompting, SoloLearn ×2) | `lib/content/certifications.ts` |
-| `technical-skills.ts` | 6 categories, 32 skills with levels | `lib/content/skills.ts` |
+| `technical-skills.ts` | 6 categories, 36 skills with levels | `lib/content/skills.ts` |
 | `portfolio.ts` | **13 projects**, each with 1–14 gallery images | `lib/content/projects.ts` |
 | `title-description.ts` | SEO title/description | `app/layout.tsx` metadata |
 | `public/project-images/` | 68 WebP screenshots, 16 folders | `public/projects/` (kept as-is) |
@@ -210,7 +210,7 @@ only the interactive leaves (`DraftingField`, `Reveal`, `Counter`, modal, copy b
 ## 6. Phases & acceptance criteria
 
 ### Phase 0 — Recon & content lock ✅
-- [x] Inventory v4.1 content and assets; confirm 13 projects / 3 roles / 4 certs / 32 skills
+- [x] Inventory v4.1 content and assets; confirm 13 projects / 3 roles / 4 certs / 36 skills
 - [x] Stage assets into the new repo (68 WebP screenshots, CV, portrait, OG)
 - [x] Commit the roadmap before writing code
 
@@ -226,11 +226,12 @@ only the interactive leaves (`DraftingField`, `Reveal`, `Counter`, modal, copy b
 - [x] Motion primitives with reduced-motion short-circuits
 - [ ] Frame-budget check: stable on throttle, no layout thrash, rAF paused when hidden
 
-### Phase 3 — Sections
-- [ ] Hero, Profile, Work (archive rows + hover preview), Capabilities, Experience,
+### Phase 3 — Sections ✅
+- [x] Hero, Profile, Work (archive rows + hover preview), Capabilities, Experience,
       Credentials, Contact
-- [ ] All 13 projects render with covers, stacks, links; every v4.1 field represented
-- [ ] Project gallery modal wired to the real `projectGallery` arrays (keyboard + ESC + focus trap)
+- [x] All 13 projects render with covers, stacks, links; every v4.1 field represented
+- [x] Project gallery modal wired to the real `projectGallery` arrays (keyboard + ESC + focus trap)
+- [x] SSR audit: 13/13 projects, 36/36 skills, 3/3 roles, 4/4 certs, degree, 7 section ids
 
 ### Phase 4 — Craft pass
 - [ ] Responsive at 375 / 768 / 1024 / 1440 / 1920; no horizontal scroll anywhere
@@ -287,6 +288,7 @@ only the interactive leaves (`DraftingField`, `Reveal`, `Counter`, modal, copy b
 | 2026-10-22 | 0 | Recon of v4.1 complete; assets staged; roadmap authored | `chore: add build roadmap` |
 | 2026-10-22 | 1 | Next 16 + Tailwind v4 scaffold; tokens, frame, type scale; 68 assets; hero + chrome; build green | `feat: scaffold app and design system` |
 | 2026-10-22 | 2 | `DraftingField` scroll-reactive canvas; `Reveal` / `MaskLine` / `DrawRule` / `Counter` primitives | (same commit) |
+| 2026-10-22 | 3 | All seven sections built; work archive + gallery modal; SSR content audit passed | `feat: build all content sections` |
 
 ### Implementation notes
 
