@@ -214,15 +214,16 @@ only the interactive leaves (`DraftingField`, `Reveal`, `Counter`, modal, copy b
 - [x] Stage assets into the new repo (68 WebP screenshots, CV, portrait, OG)
 - [x] Commit the roadmap before writing code
 
-### Phase 1 — Scaffold & design system
-- [ ] Next 16 + TS strict + Tailwind v4 + Framer Motion, self-hosted fonts
-- [ ] Token layer (`@theme`): paper/ink/rule/accent, type scale, spacing, easing
-- [ ] Container frame, section header pattern, mono label, spec row primitives
-- [ ] `npx next build` green; SSR HTML contains the name and title
+### Phase 1 — Scaffold & design system ✅
+- [x] Next 16 + TS strict + Tailwind v4 + Framer Motion, self-hosted fonts
+- [x] Token layer (`@theme`): paper/ink/rule/accent, type scale, spacing, easing
+- [x] Container frame, section header pattern, mono label, spec row primitives
+- [x] `npx next build` green; SSR HTML contains the name and title
+- [x] Font chain verified in compiled CSS (see note below)
 
 ### Phase 2 — Motion & background layer
-- [ ] `DraftingField` canvas: grid + flow field + scroll velocity + pointer mask + fallbacks
-- [ ] Motion primitives with reduced-motion short-circuits
+- [x] `DraftingField` canvas: grid + flow field + scroll velocity + pointer mask + fallbacks
+- [x] Motion primitives with reduced-motion short-circuits
 - [ ] Frame-budget check: stable on throttle, no layout thrash, rAF paused when hidden
 
 ### Phase 3 — Sections
@@ -284,3 +285,17 @@ only the interactive leaves (`DraftingField`, `Reveal`, `Counter`, modal, copy b
 | Date | Phase | What changed | Commit |
 |---|---|---|---|
 | 2026-10-22 | 0 | Recon of v4.1 complete; assets staged; roadmap authored | `chore: add build roadmap` |
+| 2026-10-22 | 1 | Next 16 + Tailwind v4 scaffold; tokens, frame, type scale; 68 assets; hero + chrome; build green | `feat: scaffold app and design system` |
+| 2026-10-22 | 2 | `DraftingField` scroll-reactive canvas; `Reveal` / `MaskLine` / `DrawRule` / `Counter` primitives | (same commit) |
+
+### Implementation notes
+
+- **Font variable collision (fixed):** naming the local font variable `--font-serif` silently
+  collided with Tailwind's built-in `--font-serif` token, so the display face resolved to a system
+  serif. Renamed to `--font-instrument`; verified `--font-display` →
+  `var(--font-instrument), Georgia…` in the compiled CSS.
+- **Verification without a server:** `next start` dies in this sandbox on `uv_interface_addresses`.
+  `STATIC_EXPORT=1 npx next build` emits `out/`, which is served with `python3 -m http.server` for
+  SSR/CSS inspection. Vercel uses the normal build.
+- **Copy:** hero lede is rewritten from v4.1's boilerplate into a factual line (decade of business
+  systems, Laravel + Next.js). No claim added that the source data does not support.
